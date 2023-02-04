@@ -1,0 +1,320 @@
+{
+    "location": {
+        "address": [
+            "Tokyo, Tokyo Prefecture, Japan",
+            "Tokio, Texas, United States",
+            "TONYO, Mara, Tanzania",
+            "Tokoyo, Mbomou, Central African Republic",
+            "Toko, Nord-Ubangi, Democratic Republic of the Congo",
+            "Toky, Mandoul, Chad",
+            "Toko, Logone Oriental, Chad",
+            "Toko, South, Cameroon"
+        ],
+        "adminDistrict": [
+            "Tokyo Prefecture",
+            "Texas",
+            "Mara",
+            "Mbomou",
+            "Nord-Ubangi",
+            "Mandoul",
+            "Logone Oriental",
+            "South"
+        ],
+        "adminDistrictCode": [
+            null,
+            "TX",
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+        ],
+        "city": [
+            "Tokyo",
+            "Tokio",
+            "TONYO",
+            "Tokoyo",
+            "Toko",
+            "Toky",
+            "Toko",
+            "Toko"
+        ],
+        "country": [
+            "Japan",
+            "United States",
+            "Tanzania",
+            "Central African Republic",
+            "Democratic Republic of the Congo",
+            "Chad",
+            "Chad",
+            "Cameroon"
+        ],
+        "countryCode": [
+            "JP",
+            "US",
+            "TZ",
+            "CF",
+            "CD",
+            "TD",
+            "TD",
+            "CM"
+        ],
+        "displayName": [
+            "Tokyo",
+            "Tokio",
+            "TONYO",
+            "Tokoyo",
+            "Toko",
+            "Toky",
+            "Toko",
+            "Toko"
+        ],
+        "ianaTimeZone": [
+            "Asia/Tokyo",
+            "America/Chicago",
+            "Africa/Dar_es_Salaam",
+            "Africa/Bangui",
+            "Africa/Kinshasa",
+            "Africa/Ndjamena",
+            "Africa/Ndjamena",
+            "Africa/Douala"
+        ],
+        "latitude": [
+            35.689,
+            33.283,
+            -1.624,
+            4.768,
+            4.815,
+            9.246,
+            7.693,
+            2.954
+        ],
+        "locale": [
+            {
+                "locale1": null,
+                "locale2": "Tokyo",
+                "locale3": null,
+                "locale4": null
+            },
+            {
+                "locale1": "Yoakum County",
+                "locale2": "Tokio",
+                "locale3": null,
+                "locale4": null
+            },
+            {
+                "locale1": null,
+                "locale2": "TONYO",
+                "locale3": null,
+                "locale4": null
+            },
+            {
+                "locale1": null,
+                "locale2": "Tokoyo",
+                "locale3": null,
+                "locale4": null
+            },
+            {
+                "locale1": null,
+                "locale2": "Toko",
+                "locale3": null,
+                "locale4": null
+            },
+            {
+                "locale1": null,
+                "locale2": "Toky",
+                "locale3": null,
+                "locale4": null
+            },
+            {
+                "locale1": null,
+                "locale2": "Toko",
+                "locale3": null,
+                "locale4": null
+            },
+            {
+                "locale1": null,
+                "locale2": "Toko",
+                "locale3": null,
+                "locale4": null
+            }
+        ],
+        "longitude": [
+            139.693,
+            -102.658,
+            33.888,
+            22.847,
+            20.11,
+            17.232,
+            15.989,
+            10.479
+        ],
+        "neighborhood": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+        ],
+        "placeId": [
+            "4e73be5bb1986d9da1aea69b87c0c9992ad65aecd6fa642d1307f8c488fb6803",
+            "cf5a3bc64bf581251feac35685b21417cc01b42dd49b42210fcda16f3face9c4",
+            "b36022572fb143aa00a11a6b48e22a49ba56bf46072a35df04ec4bd2f0dd58d2",
+            "df95c782429620d821ca78ff8a6c2b5b1bdcea93c0a3b01798bf1330434a4ccd",
+            "aa0c04984ad542d69800a7d3c375ff907aba615d23beadce4596459abd8d5ee0",
+            "44f6252fde3ca5796d9b60cc586796ef682fc63323baa12e8b07695195b0d5bb",
+            "fe1185c6840e6be990547024827902858fdd10b79e2b72c1d813c7a681881c10",
+            "0717026a2bdd6baaf62c736fd2a9cd544d6e21ed6cb7d0d7f4750d95c51dd72d"
+        ],
+        "postalCode": [
+            "160-0023",
+            "79376",
+            "312",
+            null,
+            null,
+            null,
+            null,
+            null
+        ],
+        "postalKey": [
+            "160-0023:JP",
+            "79376:US",
+            "312:TZ",
+            null,
+            null,
+            null,
+            null,
+            null
+        ],
+        "disputedArea": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+        ],
+        "disputedCountries": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+        ],
+        "disputedCountryCodes": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+        ],
+        "disputedCustomers": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+        ],
+        "disputedShowCountry": [
+            [
+                false
+            ],
+            [
+                false
+            ],
+            [
+                false
+            ],
+            [
+                false
+            ],
+            [
+                false
+            ],
+            [
+                false
+            ],
+            [
+                false
+            ],
+            [
+                false
+            ]
+        ],
+        "iataCode": [
+            "HND",
+            "HOB",
+            "MUZ",
+            null,
+            "BDT",
+            "SRH",
+            "MQQ",
+            "BSG"
+        ],
+        "icaoCode": [
+            "RJTT",
+            "KHOB",
+            "HTMU",
+            null,
+            "FZFD",
+            "FTTA",
+            "FTTD",
+            "FGBT"
+        ],
+        "locId": [
+            "JPTY0295:1:JP",
+            "USTX1364:1:US",
+            "TZXX3349:1:TZ",
+            "CFXX3228:1:CF",
+            "CDXX8724:1:CD",
+            "TDXX7328:1:TD",
+            "TDXX6122:1:TD",
+            "CMXX8874:1:CM"
+        ],
+        "locationCategory": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+        ],
+        "pwsId": [
+            "ITOKYO103",
+            "KTXPLAIN10",
+            "IBONDO16",
+            "IBANGA11",
+            "I90582190",
+            "ILOGONEO2",
+            "IPAOUA1",
+            "ISOUTH1325"
+        ],
+        "type": [
+            "city",
+            "city",
+            "city",
+            "city",
+            "city",
+            "city",
+            "city",
+            "city"
+        ]
+    }
+}
