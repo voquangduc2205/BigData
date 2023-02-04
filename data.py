@@ -3,13 +3,33 @@ import json
 import numpy as np
 import pandas as pd
 import csv
+
+getCurrentWeatherUrl = "https://api.weather.com/v2/pws/observations/current"
+getCurrentApiHeader = {}
+getCurrentApiHeader["apiKey"] = "e1f10a1e78da46f5b10a1e78da96f525"
+getCurrentApiHeader['units'] = 'e'
+getCurrentApiHeader['format'] = 'json'
+
+# def readCityFile():
+
+
+# def getCurrentWeatherInfo(strationId):
+#     getCurrentApiHeader[strationId]
+#     res = requests.get(getCurrentWeatherUrl, getCurrentApiHeader)
+#     if res.status_code != 200:
+#         return None
+#     return res.json()
+
+# def getAllCurrentWeatherInfo(stationId):
+
+# exit()
 city_name_array = []
 city_name_array = [line.rstrip() for line in open('city',encoding='utf-8')]
 # print(city_name_array);
 
 file_city = open('city.csv', 'a',encoding='utf-16', newline='')
 csv_writer = csv.writer(file_city)
-
+log_timeout = open('city.csv', 'a')
 getLocatioinApiUrl = 'https://api.weather.com/v3/location/search'
 getLocatioinApiHeader = {}
 getLocatioinApiHeader['apiKey'] = 'e1f10a1e78da46f5b10a1e78da96f525'
@@ -23,7 +43,12 @@ csv_writer.writerow(fileHeader)
 for city_name in city_name_array:
     city_data = []
     getLocatioinApiHeader['query'] = city_name
-    response = requests.get(getLocatioinApiUrl, getLocatioinApiHeader)
+    try: 
+        response = requests.get(getLocatioinApiUrl, getLocatioinApiHeader)
+    except:
+        log_timeout.write(city_name)
+        log_timeout.write("\n")
+        continue
     city_search_result =[]
     if response.status_code != 200 :
         continue
