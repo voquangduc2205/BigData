@@ -10,26 +10,32 @@ getCurrentApiHeader["apiKey"] = "e1f10a1e78da46f5b10a1e78da96f525"
 getCurrentApiHeader['units'] = 'e'
 getCurrentApiHeader['format'] = 'json'
 
-# def readCityFile():
+def readStation():
+    df = pd.read_csv('city.csv', skipinitialspace=True)
+    return df['pwsId']
 
+def getCurrentWeatherInfo(strationId):
+    getCurrentApiHeader['stationId'] = strationId
+    res = requests.get(getCurrentWeatherUrl, getCurrentApiHeader)
+    if res.status_code != 200:
+        if res.status_code == 204:
+            return 'No content weather'
+        return strationId
+    return res.json()
 
-# def getCurrentWeatherInfo(strationId):
-#     getCurrentApiHeader[strationId]
-#     res = requests.get(getCurrentWeatherUrl, getCurrentApiHeader)
-#     if res.status_code != 200:
-#         return None
-#     return res.json()
+def getAllCurrentWeatherInfo():
+    allIds = readStation()
+    for i in allIds:
+        print(getCurrentWeatherInfo(i))
 
-# def getAllCurrentWeatherInfo(stationId):
-
-# exit()
+exit()
 city_name_array = []
 city_name_array = [line.rstrip() for line in open('city',encoding='utf-8')]
 # print(city_name_array);
 
-file_city = open('city.csv', 'a',encoding='utf-16', newline='')
+file_city = open('city.csv', 'w',encoding='utf-8',newline="")
 csv_writer = csv.writer(file_city)
-log_timeout = open('city.csv', 'a')
+log_timeout = open('timeout.log', 'a')
 getLocatioinApiUrl = 'https://api.weather.com/v3/location/search'
 getLocatioinApiHeader = {}
 getLocatioinApiHeader['apiKey'] = 'e1f10a1e78da46f5b10a1e78da96f525'
@@ -60,7 +66,7 @@ for city_name in city_name_array:
             index_expected_result.append(i)
     for i in index_expected_result:
         station = {}
-        station["pwsId"] = res["location"]["pwsId"][i]
+        station["pwsId"] = res["location"]["pwsId"][i] 
         station["longitude"] = res["location"]["longitude"][i]
         station["latitude"] = res["location"]["latitude"][i]
         station["countryCode"] = res["location"]["countryCode"][i]
@@ -69,10 +75,12 @@ for city_name in city_name_array:
         station["address"] = res["location"]["address"][i]
         station["city"] = res["location"]["city"][i]
         stations_data.append(station)
-        csv_writer.writerow(station.values())
+        if station["pwsId"] != None:
+            csv_writer.writerow(station.values())
         print(station["pwsId"])
     stations_data.append(city_data)
 file_city.close()
+log_timeout.close()
 exit()
 
 
