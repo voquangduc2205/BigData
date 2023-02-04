@@ -1,0 +1,386 @@
+{
+    "location": {
+        "address": [
+            "Tokyo, Tokyo Prefecture, Japan",
+            "Minami Gyotoku Sky Heights, 2-5-1 Saiwai, Ichikawa.",
+            "Setagaya-ku",
+            "Tokio, Texas, United States",
+            "Setagaya-ku",
+            "TONYO, Mara, Tanzania",
+            "Shibuya",
+            "Tokoyo, Mbomou, Central African Republic",
+            "Shinagawa-ku",
+            "Toko, Nord-Ubangi, Democratic Republic of the Congo"
+        ],
+        "adminDistrict": [
+            "Tokyo Prefecture",
+            "TOKYO",
+            null,
+            "Texas",
+            null,
+            "Mara",
+            null,
+            "Mbomou",
+            null,
+            "Nord-Ubangi"
+        ],
+        "adminDistrictCode": [
+            null,
+            "TOKYO",
+            null,
+            "TX",
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+        ],
+        "city": [
+            "Tokyo",
+            "Tokyo",
+            "Tokyo",
+            "Tokio",
+            "Tokyo",
+            "TONYO",
+            "Tokyo",
+            "Tokoyo",
+            "Tokyo",
+            "Toko"
+        ],
+        "country": [
+            "Japan",
+            "JP",
+            "JP",
+            "United States",
+            "JP",
+            "Tanzania",
+            "JP",
+            "Central African Republic",
+            "JP",
+            "Democratic Republic of the Congo"
+        ],
+        "countryCode": [
+            "JP",
+            "JP",
+            "JP",
+            "US",
+            "JP",
+            "TZ",
+            "JP",
+            "CF",
+            "JP",
+            "CD"
+        ],
+        "displayName": [
+            "Tokyo",
+            "Minami Gyotoku Sky Heights, 2-5-1 Saiwai, Ichikawa.",
+            "Setagaya-ku",
+            "Tokio",
+            "Tokyo",
+            "TONYO",
+            "Shibuya",
+            "Tokoyo",
+            "Shinagawa-ku",
+            "Toko"
+        ],
+        "ianaTimeZone": [
+            "Asia/Tokyo",
+            "Asia/Tokyo",
+            "Asia/Tokyo",
+            "America/Chicago",
+            "Asia/Tokyo",
+            "Africa/Dar_es_Salaam",
+            "Asia/Tokyo",
+            "Africa/Bangui",
+            "Asia/Tokyo",
+            "Africa/Kinshasa"
+        ],
+        "latitude": [
+            35.689,
+            35.678,
+            35.643,
+            33.283,
+            35.641,
+            -1.624,
+            35.658,
+            4.768,
+            35.623,
+            4.815
+        ],
+        "locale": [
+            {
+                "locale1": null,
+                "locale2": "Tokyo",
+                "locale3": null,
+                "locale4": null
+            },
+            {
+                "locale1": null,
+                "locale2": "Tokyo",
+                "locale3": null,
+                "locale4": "Minami Gyotoku Sky Heights, 2-5-1 Saiwai, Ichikawa."
+            },
+            {
+                "locale1": null,
+                "locale2": "Tokyo",
+                "locale3": null,
+                "locale4": "Setagaya-ku"
+            },
+            {
+                "locale1": "Yoakum County",
+                "locale2": "Tokio",
+                "locale3": null,
+                "locale4": null
+            },
+            {
+                "locale1": null,
+                "locale2": "Tokyo",
+                "locale3": null,
+                "locale4": "Setagaya-ku"
+            },
+            {
+                "locale1": null,
+                "locale2": "TONYO",
+                "locale3": null,
+                "locale4": null
+            },
+            {
+                "locale1": null,
+                "locale2": "Tokyo",
+                "locale3": null,
+                "locale4": "Shibuya"
+            },
+            {
+                "locale1": null,
+                "locale2": "Tokoyo",
+                "locale3": null,
+                "locale4": null
+            },
+            {
+                "locale1": null,
+                "locale2": "Tokyo",
+                "locale3": null,
+                "locale4": "Shinagawa-ku"
+            },
+            {
+                "locale1": null,
+                "locale2": "Toko",
+                "locale3": null,
+                "locale4": null
+            }
+        ],
+        "longitude": [
+            139.693,
+            139.928,
+            139.646,
+            -102.658,
+            139.6,
+            33.888,
+            139.709,
+            22.847,
+            139.719,
+            20.11
+        ],
+        "neighborhood": [
+            null,
+            "Minami Gyotoku Sky Heights, 2-5-1 Saiwai, Ichikawa.",
+            "Setagaya-ku",
+            null,
+            "Setagaya-ku",
+            null,
+            "Shibuya",
+            null,
+            "Shinagawa-ku",
+            null
+        ],
+        "placeId": [
+            "4e73be5bb1986d9da1aea69b87c0c9992ad65aecd6fa642d1307f8c488fb6803",
+            "b6f44280c26473694e6253f2f38d7e7042b97494a691ddcd29beeaf36c6a0460",
+            "99327b5e57e0ea8b2b5ea545264634c414a12efdae0e084dbae57e762091b6b0",
+            "cf5a3bc64bf581251feac35685b21417cc01b42dd49b42210fcda16f3face9c4",
+            "32514c0d669d3a250cbbfb585dfc2aa83181131d50ba53895a0c524d3751b7a1",
+            "b36022572fb143aa00a11a6b48e22a49ba56bf46072a35df04ec4bd2f0dd58d2",
+            "ecce35363843cf7ac458e1254e5b900ac31f89a222c711e9509330226c5f1a01",
+            "df95c782429620d821ca78ff8a6c2b5b1bdcea93c0a3b01798bf1330434a4ccd",
+            "29ad59fcb654ccae9b6018938774b55b969e0159d232f54ba3f0d581a643807a",
+            "aa0c04984ad542d69800a7d3c375ff907aba615d23beadce4596459abd8d5ee0"
+        ],
+        "postalCode": [
+            "160-0023",
+            "272-0123",
+            "154-0017",
+            "79376",
+            "157-0066",
+            "312",
+            "150-0002",
+            null,
+            "141-0031",
+            null
+        ],
+        "postalKey": [
+            "160-0023:JP",
+            "272-0123:JP",
+            "154-0017:JP",
+            "79376:US",
+            "157-0066:JP",
+            "312:TZ",
+            "150-0002:JP",
+            null,
+            "141-0031:JP",
+            null
+        ],
+        "disputedArea": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+        ],
+        "disputedCountries": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+        ],
+        "disputedCountryCodes": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+        ],
+        "disputedCustomers": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+        ],
+        "disputedShowCountry": [
+            [
+                false
+            ],
+            [
+                false
+            ],
+            [
+                false
+            ],
+            [
+                false
+            ],
+            [
+                false
+            ],
+            [
+                false
+            ],
+            [
+                false
+            ],
+            [
+                false
+            ],
+            [
+                false
+            ],
+            [
+                false
+            ]
+        ],
+        "iataCode": [
+            "HND",
+            "HND",
+            "HND",
+            "HOB",
+            "HND",
+            "MUZ",
+            "HND",
+            null,
+            "HND",
+            "BDT"
+        ],
+        "icaoCode": [
+            "RJTT",
+            "RJTT",
+            "RJTT",
+            "KHOB",
+            "RJTT",
+            "HTMU",
+            "RJTT",
+            null,
+            "RJTT",
+            "FZFD"
+        ],
+        "locId": [
+            "JPTY0295:1:JP",
+            "JPTA0152:1:JP",
+            "JPTY0215:1:JP",
+            "USTX1364:1:US",
+            "JPTY0089:1:JP",
+            "TZXX3349:1:TZ",
+            "JPTY0209:1:JP",
+            "CFXX3228:1:CF",
+            "JPTY0044:1:JP",
+            "CDXX8724:1:CD"
+        ],
+        "locationCategory": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+        ],
+        "pwsId": [
+            "ITOKYO103",
+            "ITOKYOTO4",
+            "ITOKYO131",
+            "KTXPLAIN10",
+            "ITOKYO113",
+            "IBONDO16",
+            "ITOKYO102",
+            "IBANGA11",
+            "ITOKYO111",
+            "I90582190"
+        ],
+        "type": [
+            "city",
+            "pws",
+            "pws",
+            "city",
+            "pws",
+            "city",
+            "pws",
+            "city",
+            "pws",
+            "city"
+        ]
+    }
+}
