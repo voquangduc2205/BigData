@@ -81,6 +81,7 @@ def write_json(new_data, filename='weather_data.json'):
 def getAllCurrentWeatherInfo():
     for i in allIds:
         raw_data = getCurrentWeatherInfo(i)
+        print(raw_data)
         try:
             producer.send('weather_data', raw_data)
         except Exception:
