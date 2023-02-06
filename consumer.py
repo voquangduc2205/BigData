@@ -77,9 +77,19 @@ weather_df = weather_df.withColumn("precipRate", weather_df["sample"]["observati
 weather_df = weather_df.withColumn("precipTotal", weather_df["sample"]["observations"].getItem(0)["imperial"]["precipTotal"])
 weather_df = weather_df.withColumn("elev", weather_df["sample"]["observations"].getItem(0)["imperial"]["elev"])
 
-
-
 weather_df.drop("sample").printSchema()
+
+output_data = weather_df.select("stationID", "obsTimeUtc", "temp", "heatIndex", "windSpeed")
+
+weather_agg_write_stream = output_data \
+       .writeStream \
+       .trigger(processingTime='1 seconds') \
+       .outputMode("update") \
+       .option("truncate", "false") \
+       .format("console") \
+       .start()
+
+weather_agg_write_stream.awaitTermination()
 
 # table = data.select(from_json(data.value.cast("string"), schema=schema)).alias("observations")
 

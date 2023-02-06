@@ -18,16 +18,16 @@ services:
       - ALLOW_PLAINTEXT_LISTENER=yes
     depends_on:
       - zookeeper
-  database:
-    image: mysql:latest
-    container_name: database
-    restart: unless-stopped
-    environment:
-      MYSQL_USER: ducvq
-      MYSQL_PASSWORD: root
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: weather
-    ports:
-      - 9306:3306
-    volumes:
-      - ./docker/database:/var/lib/mysql
+  # database:
+  #   image: mysql:latest
+  #   container_name: database
+  #   restart: unless-stopped
+  #   environment:
+  #     MYSQL_USER: ducvq
+  #     MYSQL_PASSWORD: root
+  #     MYSQL_ROOT_PASSWORD: root
+  #     MYSQL_DATABASE: weather
+  #   ports:
+  #     - 9306:3306
+  #   volumes:
+  #     - ./docker/database:/var/lib/mysql
