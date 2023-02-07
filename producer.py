@@ -78,11 +78,13 @@ def write_json(new_data, filename='weather_data.json'):
 
 
 def getAllCurrentWeatherInfo():
+    cnt = 0
     for i in allIds:
         raw_data = getCurrentWeatherInfo(i)
         try:
             if raw_data['observations'] is not None:
-                print(raw_data)
+                cnt+= 1
+                print('Number of records: ', cnt)
                 producer.send('weather_data', raw_data)
         except Exception:
             print("Unable to send data to Kafka!")
