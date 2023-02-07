@@ -21,7 +21,6 @@ bootstrap_servers = ['localhost:9092']
 topic_list = []
 topic_list.append(NewTopic(name="weather_data", num_partitions=1, replication_factor=1))
 
-
 #define a producer
 
 def json_serializer(data):
@@ -81,9 +80,10 @@ def write_json(new_data, filename='weather_data.json'):
 def getAllCurrentWeatherInfo():
     for i in allIds:
         raw_data = getCurrentWeatherInfo(i)
-        print(raw_data)
         try:
-            producer.send('weather_data', raw_data)
+            if raw_data['observations'] is not None:
+                print(raw_data)
+                producer.send('weather_data', raw_data)
         except Exception:
             print("Unable to send data to Kafka!")
    

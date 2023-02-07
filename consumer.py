@@ -4,10 +4,19 @@ from pyspark.context import SparkContext
 from pyspark.sql import SparkSession
 from pyspark.sql.types import *
 from pyspark.sql.functions import *
+import findspark
 
 os.environ['PYSPARK_SUBMIT_ARGS'] = '--packages org.apache.spark:spark-streaming-kafka-0-10_2.12:3.3.1,org.apache.spark:spark-sql-kafka-0-10_2.12:3.1.2 pyspark-shell'
+findspark.init()
 
-spark = SparkSession.builder.master("local[1]").appName('SparkByExamples.com').getOrCreate()
+print(pyspark.__version__)
+spark = SparkSession.builder.master("local[1]").appName('SparkByExamples.com') \
+              .config('spark.jars.packages', 'org.mongodb.spark:mongo-spark-connector_2.12:3.0.2') \
+              .config("spark.mongodb.input.uri", "mongodb+srv://ducvq:rocketdata@fake-database.iw3ot2b.mongodb.net/test.weather")\
+              .config("spark.mongodb.output.uri", "mongodb+srv://ducvq:rocketdata@fake-database.iw3ot2b.mongodb.net/test.weather")\
+              .getOrCreate()
+              
+              
 spark.sparkContext.setLogLevel("ERROR")
 
 bootstrap_servers = "localhost:9092"
@@ -28,6 +37,7 @@ schema = StructType([StructField("observations", ArrayType(StructType([
                     StructField("lat", FloatType(), True),
                     StructField("uv", StringType(), True),
                     StructField("windir", FloatType(), True),
+                    StructField("humidity", FloatType(), True),
                     StructField("qcStatus", IntegerType(), True),
                     StructField("imperial", 
                                 StructType([StructField("temp", FloatType(), True),
@@ -62,9 +72,11 @@ weather_df = weather_df.withColumn("solarRadiation", weather_df["sample"]["obser
 weather_df = weather_df.withColumn("longitude", weather_df["sample"]["observations"].getItem(0)["lon"])
 weather_df = weather_df.withColumn("realtimeFrequency", weather_df["sample"]["observations"].getItem(0)["realtimeFrequency"])
 weather_df = weather_df.withColumn("epoch", weather_df["sample"]["observations"].getItem(0)["epoch"])
+weather_df = weather_df.withColumn("country", weather_df["sample"]["observations"].getItem(0)["country"])
 weather_df = weather_df.withColumn("latitude", weather_df["sample"]["observations"].getItem(0)["lat"])
 weather_df = weather_df.withColumn("uv", weather_df["sample"]["observations"].getItem(0)["uv"])
 weather_df = weather_df.withColumn("windir", weather_df["sample"]["observations"].getItem(0)["windir"])
+weather_df = weather_df.withColumn("humidity", weather_df["sample"]["observations"].getItem(0)["humidity"])
 weather_df = weather_df.withColumn("qcStatus", weather_df["sample"]["observations"].getItem(0)["qcStatus"])
 weather_df = weather_df.withColumn("temp", weather_df["sample"]["observations"].getItem(0)["imperial"]["temp"])
 weather_df = weather_df.withColumn("heatIndex", weather_df["sample"]["observations"].getItem(0)["imperial"]["temp"])
@@ -79,15 +91,53 @@ weather_df = weather_df.withColumn("elev", weather_df["sample"]["observations"].
 
 weather_df.drop("sample").printSchema()
 
-output_data = weather_df.select("stationID", "obsTimeUtc", "temp", "heatIndex", "windSpeed")
+output_data = weather_df.select("stationID", "obsTimeUtc", "obsTimeLocal", "neighborhood", "softwareType", "solarRadiation", "longitude", 
+                                "realtimeFrequency", "epoch", "latitude", "uv", "windir", "humidity", "qcStatus", "temp", "heatIndex", 
+                                "dewpt", "windChill", "windSpeed", "windGust", "pressure", "precipRate", "precipTotal", "elev", "country")
+
+# weather_agg_write_stream = output_data \
+#        .writeStream \
+#        .trigger(processingTime='1 seconds') \
+#        .outputMode("update") \
+#        .option("truncate", "false") \
+#        .format("console") \
+#        .start()
+
+# weather_agg_write_stream = output_data \
+#          .writeStream \
+#          .format("csv") \
+#          .option("format", "append") \
+#          .option("path", "/home/dust/python_workspace/Python_Workspace/pyspark/file_sink/") \
+#          .option("checkpointLocation", "/home/dust/python_workspace/Python_Workspace/pyspark/check_point/") \
+#          .outputMode("append") \
+#          .start()
+
+
+def write_row_in_mongo(df, dd):
+    df.write.format("com.mongodb.spark.sql.DefaultSource").mode(
+        "append").save()
+    pass
+
+output_data.printSchema()
 
 weather_agg_write_stream = output_data \
-       .writeStream \
-       .trigger(processingTime='1 seconds') \
-       .outputMode("update") \
-       .option("truncate", "false") \
-       .format("console") \
-       .start()
+              .writeStream \
+              .format('console') \
+              .foreachBatch(write_row_in_mongo) \
+              .start()
+
+
+# dsw = weather_df.writeStream \
+#     .format("mongodb") \
+#     .queryName("ToMDB") \
+#     .option("checkpointLocation", "/tmp/pyspark7/") \
+#     .option("forceDeleteTempCheckpointLocation", "true") \
+#     .option('spark.mongodb.connection.uri', 'mongodb+srv://ducvq:rocketdata@fake-database.iw3ot2b.mongodb.net/') \
+#     .option('spark.mongodb.database', 'test') \
+#     .option('spark.mongodb.collection', 'Weather') \
+#     .trigger(continuous="10 seconds") \
+#     .outputMode("append") \
+#     .start().awaitTermination();
 
 weather_agg_write_stream.awaitTermination()
 
