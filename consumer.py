@@ -11,9 +11,10 @@ findspark.init()
 
 print(pyspark.__version__)
 spark = SparkSession.builder.master("local[1]").appName('SparkByExamples.com') \
-              .config('spark.jars.packages', 'org.mongodb.spark:mongo-spark-connector_2.12:3.0.2') \
-              .config("spark.mongodb.input.uri", "mongodb+srv://ducvq:rocketdata@fake-database.iw3ot2b.mongodb.net/test.weather")\
-              .config("spark.mongodb.output.uri", "mongodb+srv://ducvq:rocketdata@fake-database.iw3ot2b.mongodb.net/test.weather")\
+              .config('spark.jars.packages', 'org.mongodb.spark:mongo-spark-connector_2.12:3.0.2')\
+              .config("spark.jars", "./postgresql-42.5.2.jar") \
+              .config("spark.mongodb.input.uri", "mongodb+srv://ducvq:rocketdata@fake-database.iw3ot2b.mongodb.net/test.weather_data")\
+              .config("spark.mongodb.output.uri", "mongodb+srv://ducvq:rocketdata@fake-database.iw3ot2b.mongodb.net/test.weather_data")\
               .getOrCreate()
               
               
@@ -50,19 +51,21 @@ schema = StructType([StructField("observations", ArrayType(StructType([
                                             StructField("precipRate", FloatType(), True),
                                             StructField("precipTotal", FloatType(), True),
                                             StructField("elev", FloatType(), True)]), True)
-]), True), True)])
+]), True), True), StructField("city", StringType(), True)])
 
 sampleDataFrame = spark.readStream.format("kafka") \
        .option("kafka.bootstrap.servers", bootstrap_servers) \
        .option("subscribe", topic_name) \
        .option("startingOffsets", "latest") \
        .load()
-       
+
+# sampleDataFrame.printSchema()       
 
 data_df = sampleDataFrame.selectExpr("CAST(value as string)", "timestamp")
 
 weather_df = data_df.select(from_json(col("value"), schema=schema).alias("sample"), "timestamp")
 
+weather_df = weather_df.withColumn("city", weather_df["sample"]["city"])
 weather_df = weather_df.withColumn("stationID", weather_df["sample"]["observations"].getItem(0)["stationID"])
 weather_df = weather_df.withColumn("obsTimeUtc", weather_df["sample"]["observations"].getItem(0)["obsTimeUtc"])
 weather_df = weather_df.withColumn("obsTimeLocal", weather_df["sample"]["observations"].getItem(0)["obsTimeLocal"])
@@ -89,11 +92,27 @@ weather_df = weather_df.withColumn("precipRate", weather_df["sample"]["observati
 weather_df = weather_df.withColumn("precipTotal", weather_df["sample"]["observations"].getItem(0)["imperial"]["precipTotal"])
 weather_df = weather_df.withColumn("elev", weather_df["sample"]["observations"].getItem(0)["imperial"]["elev"])
 
-weather_df.drop("sample").printSchema()
+weather_df.drop("sample")
 
 output_data = weather_df.select("stationID", "obsTimeUtc", "obsTimeLocal", "neighborhood", "softwareType", "solarRadiation", "longitude", 
-                                "realtimeFrequency", "epoch", "latitude", "uv", "windir", "humidity", "qcStatus", "temp", "heatIndex", 
+                                "realtimeFrequency", "epoch", "latitude", "uv", "windir", "humidity", "qcStatus", "temp", "heatIndex", "city",
                                 "dewpt", "windChill", "windSpeed", "windGust", "pressure", "precipRate", "precipTotal", "elev", "country")
+
+temperature_df = weather_df.select("stationID", "city", "obsTimeUtc", "ObsTimeLocal", "temp", "heatIndex")
+humidity_df = weather_df.select("stationID", "city", "obsTimeUtc", "ObsTimeLocal", "humidity", "dewpt", "pressure", "precipRate", "precipTotal")
+wind_df = weather_df.select("stationID", "city", "obsTimeUtc", "ObsTimeLocal", "windGust", "windChill", "windSpeed") 
+
+#connect to PostgreSql, 
+def foreach_batch_function(df, epoch_id):
+    df.write.format("jdbc") \
+      .option("url", "jdbc:postgresql://localhost:5432/test") \
+      .option("driver", "org.postgresql.Driver") \
+      .option("dbtable","temperature").option("user","duc") \
+      .option("password", "root") \
+      .mode("append").save()
+
+temperature_df.printSchema()
+temperature_df.writeStream.foreachBatch(foreach_batch_function).start().awaitTermination()
 
 # weather_agg_write_stream = output_data \
 #        .writeStream \
@@ -112,13 +131,14 @@ output_data = weather_df.select("stationID", "obsTimeUtc", "obsTimeLocal", "neig
 #          .outputMode("append") \
 #          .start()
 
+print(1)
 
 def write_row_in_mongo(df, dd):
     df.write.format("com.mongodb.spark.sql.DefaultSource").mode(
         "append").save()
     pass
 
-output_data.printSchema()
+# output_data.printSchema()
 
 weather_agg_write_stream = output_data \
               .writeStream \
@@ -147,3 +167,4 @@ weather_agg_write_stream.awaitTermination()
 # query = table.select("observations.*")
 # print(query.printSchema())
 # print('Done')
+print(1)

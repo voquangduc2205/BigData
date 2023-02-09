@@ -2,6 +2,7 @@ from kafka import KafkaProducer
 from kafka.admin import KafkaAdminClient, NewTopic  
 
 import time
+import datetime
 import json
 import requests
 import numpy as np
@@ -19,7 +20,7 @@ getCurrentApiHeader['format'] = 'json'
 bootstrap_servers = ['localhost:9092']
 
 topic_list = []
-topic_list.append(NewTopic(name="weather_data", num_partitions=1, replication_factor=1))
+topic_list.append(NewTopic(name="weather_data", num_partitions=5, replication_factor=1))
 
 #define a producer
 
@@ -76,18 +77,38 @@ def write_json(new_data, filename='weather_data.json'):
  
     # python object to be appended
 
+def readJson():
+    input_file = open ('data.json')
+    json_array = json.load(input_file)
+    return json_array
+
 
 def getAllCurrentWeatherInfo():
     cnt = 0
-    for i in allIds:
-        raw_data = getCurrentWeatherInfo(i)
-        try:
-            if raw_data['observations'] is not None:
-                cnt+= 1
-                print('Number of records: ', cnt)
-                producer.send('weather_data', raw_data)
-        except Exception:
-            print("Unable to send data to Kafka!")
+    jsonData = readJson()
+    for item in jsonData:
+        cnt +=1
+        print(cnt)
+        producer.send('weather_data', item)
+        time.sleep(0.01)
+    # for i in allIds:
+    #     now = datetime.datetime.now()
+    #     raw_data = getCurrentWeatherInfo(i)
+    #     print("Time get data:", datetime.datetime.now() - now)
+    #     now = datetime.datetime.now()
+    #     # print(raw_data)
+    #     # try:
+    #     #     if raw_data['observations'] is not None:
+    #     #         cnt+= 1
+    #     #         print('Number of records: ', cnt)
+    #     #         producer.send('weather_data', raw_data)
+    #     # except Exception as e:
+    #     #     print(e)   
+    #     #     print("Unable to send data to Kafka!")
+    #     cnt += 1
+    #     producer.send('weather_data', raw_data)
+    #     print('Number of records: ', cnt)
+    #     print("Time write data", datetime.datetime.now() - now)
    
 allIds = readStation()  
 while True:
