@@ -111,9 +111,9 @@ def getAllCurrentWeatherInfo():
     #     print("Time write data", datetime.datetime.now() - now)
    
 allIds = readStation()  
-while True:
+
     
-    getAllCurrentWeatherInfo()
-    print('====================================')
-    print("Done!")
-    print('====================================')
+getAllCurrentWeatherInfo()
+print('====================================')
+print("Done!")
+print('====================================')
