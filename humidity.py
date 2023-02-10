@@ -8,23 +8,18 @@ from pyspark.sql.streaming import StreamingQuery
 from pyspark.sql.streaming import StreamingQueryManager
 import findspark
 
+
 os.environ['PYSPARK_SUBMIT_ARGS'] = '--packages org.apache.spark:spark-streaming-kafka-0-10_2.12:3.3.1,org.apache.spark:spark-sql-kafka-0-10_2.12:3.1.2 pyspark-shell'
 findspark.init()
 
-print(pyspark.__version__)
-spark = SparkSession.builder.master("spark://172.17.0.1:7087").appName('WeatherDataProcess.com') \
-              .config('spark.jars.packages', 'org.mongodb.spark:mongo-spark-connector_2.12:3.0.2')\
+spark = SparkSession.builder.master("spark://172.17.0.1:7087").appName('HumidityProcess.com') \
               .config("spark.jars", "./postgresql-42.5.2.jar") \
-              .config("spark.mongodb.input.uri", "mongodb+srv://ducvq:rocketdata@fake-database.iw3ot2b.mongodb.net/test.weather_data")\
-              .config("spark.mongodb.output.uri", "mongodb+srv://ducvq:rocketdata@fake-database.iw3ot2b.mongodb.net/test.weather_data")\
               .getOrCreate()
-              
               
 spark.sparkContext.setLogLevel("ERROR")
 
 bootstrap_servers = "localhost:9092"
-topic_name = "weather_data"
-
+topic_name = "humidity"
 
 schema = StructType([StructField("observations", ArrayType(StructType([
                     StructField("stationID", StringType(), True),
@@ -100,20 +95,8 @@ output_data = weather_df.select("station_id", "obs_time_utc", "obs_time_local", 
                                 "realtime_frequency", "epoch", "lat", "uv", "windir", "humidity", "qc_status", "temp", "heat_index", "city",
                                 "dewpt", "wind_chill", "wind_speed", "wind_gust", "pressure", "precip_rate", "precip_total", "elev", "country")
 
-temperature_df = weather_df.select("station_id", "city", "obs_time_utc", "obs_time_local", "temp", "heat_index", "lon", "lat", "country")
 humidity_df = weather_df.select("station_id", "city", "obs_time_utc", "obs_time_local", "humidity", "dewpt", 
                                 "pressure", "precip_rate", "precip_total", "lon", "lat", "country")
-wind_df = weather_df.select("station_id", "city", "obs_time_utc", "obs_time_local", "wind_gust", "wind_chill", "wind_speed", "lon", "lat", "country") 
-
-#connect to PostgreSql, 
-def foreach_batch_function(df, epoch_id):
-    df.write.format("jdbc") \
-      .option("url", "jdbc:postgresql://localhost:5432/test") \
-      .option("driver", "org.postgresql.Driver") \
-      .option("dbtable","temperature").option("user","duc") \
-      .option("password", "root") \
-      .mode("append").save()
-      
 def foreach_batch_function1(df, epoch_id):
     df.write.format("jdbc") \
       .option("url", "jdbc:postgresql://localhost:5432/test") \
@@ -122,68 +105,4 @@ def foreach_batch_function1(df, epoch_id):
       .option("password", "root") \
       .mode("append").save()
 
-def foreach_batch_function2(df, epoch_id):
-    df.write.format("jdbc") \
-      .option("url", "jdbc:postgresql://localhost:5432/test") \
-      .option("driver", "org.postgresql.Driver") \
-      .option("dbtable","wind").option("user","duc") \
-      .option("password", "root") \
-      .mode("append").save()
-
-def write_row_in_mongo(df, dd):
-    df.write.format("com.mongodb.spark.sql.DefaultSource").mode(
-        "append").save()
-    pass
-
-# temperature_df.printSchema()
-# temperature_df.writeStream.foreachBatch(foreach_batch_function).start()
-# humidity_df.writeStream.foreachBatch(foreach_batch_function1).start()
-# wind_df.writeStream.foreachBatch(foreach_batch_function2).start()
-
-# weather_agg_write_stream = output_data \
-#        .writeStream \
-#        .trigger(processingTime='1 seconds') \
-#        .outputMode("update") \
-#        .option("truncate", "false") \
-#        .format("console") \
-#        .start()
-
-# weather_agg_write_stream = output_data \
-#          .writeStream \
-#          .format("csv") \
-#          .option("format", "append") \
-#          .option("path", "/home/dust/python_workspace/Python_Workspace/pyspark/file_sink/") \
-#          .option("checkpointLocation", "/home/dust/python_workspace/Python_Workspace/pyspark/check_point/") \
-#          .outputMode("append") \
-#          .start()
-
-
-
-
-# output_data.printSchema()
-
-weather_agg_write_stream = output_data \
-              .writeStream \
-              .format('console') \
-              .foreachBatch(write_row_in_mongo) \
-              .start().awaitTermination()
-# dsw = weather_df.writeStream \
-#     .format("mongodb") \
-#     .queryName("ToMDB") \
-#     .option("checkpointLocation", "/tmp/pyspark7/") \
-#     .option("forceDeleteTempCheckpointLocation", "true") \
-#     .option('spark.mongodb.connection.uri', 'mongodb+srv://ducvq:rocketdata@fake-database.iw3ot2b.mongodb.net/') \
-#     .option('spark.mongodb.database', 'test') \
-#     .option('spark.mongodb.collection', 'Weather') \
-#     .trigger(continuous="10 seconds") \
-#     .outputMode("append") \
-#     .start().awaitTermination();
-
-# weather_agg_write_stream.awaitTermination()
-
-# table = data.select(from_json(data.value.cast("string"), schema=schema)).alias("observations")
-
-# print('=====================')
-# query = table.select("observations.*")
-# print(query.printSchema())
-# print('Done')
+humidity_df.writeStream.foreachBatch(foreach_batch_function1).start().awaitTermination()

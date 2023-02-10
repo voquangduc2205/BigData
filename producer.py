@@ -21,6 +21,9 @@ bootstrap_servers = ['localhost:9092']
 
 topic_list = []
 topic_list.append(NewTopic(name="weather_data", num_partitions=5, replication_factor=1))
+topic_list.append(NewTopic(name="temperature", num_partitions=5, replication_factor=1))
+topic_list.append(NewTopic(name="humidity", num_partitions=5, replication_factor=1))
+topic_list.append(NewTopic(name="wind", num_partitions=5, replication_factor=1))
 
 #define a producer
 
@@ -90,6 +93,9 @@ def getAllCurrentWeatherInfo():
         cnt +=1
         print(cnt)
         producer.send('weather_data', item)
+        producer.send('temperature', item)
+        producer.send('humidity', item)
+        producer.send('wind', item)
         time.sleep(0.01)
     # for i in allIds:
     #     now = datetime.datetime.now()

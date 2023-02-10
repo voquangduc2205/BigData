@@ -6,8 +6,8 @@ from pyspark.sql.types import *
 from pyspark.sql.functions import *
 import findspark
 
-spark = SparkSession.builder.config("spark.jars", "./postgresql-42.5.2.jar") \
-                            .master("local").appName("Test").getOrCreate()
+spark = SparkSession.builder.appName("Test").master("spark://Dust-Desktop:7077")\
+                            .config("spark.jars", "./postgresql-42.5.2.jar").getOrCreate()
 
 studentDf = spark.createDataFrame([
 	Row(id=1,name='vijay',marks=67),
