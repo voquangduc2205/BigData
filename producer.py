@@ -92,11 +92,11 @@ def getAllCurrentWeatherInfo():
     for item in jsonData:
         cnt +=1
         print(cnt)
-        producer.send('weather_data', item)
+        # producer.send('weather_data', item)
         producer.send('temperature', item)
-        producer.send('humidity', item)
-        producer.send('wind', item)
-        time.sleep(0.01)
+        # producer.send('humidity', item)
+        # producer.send('wind', item)
+        time.sleep(1)
     # for i in allIds:
     #     now = datetime.datetime.now()
     #     raw_data = getCurrentWeatherInfo(i)

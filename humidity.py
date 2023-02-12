@@ -12,7 +12,7 @@ import findspark
 os.environ['PYSPARK_SUBMIT_ARGS'] = '--packages org.apache.spark:spark-streaming-kafka-0-10_2.12:3.3.1,org.apache.spark:spark-sql-kafka-0-10_2.12:3.1.2 pyspark-shell'
 findspark.init()
 
-spark = SparkSession.builder.master("spark://172.17.0.1:7087").appName('HumidityProcess.com') \
+spark = SparkSession.builder.master("local[1]").appName('HumidityProcess.com') \
               .config("spark.jars", "./postgresql-42.5.2.jar") \
               .getOrCreate()
               

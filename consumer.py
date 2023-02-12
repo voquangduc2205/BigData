@@ -12,7 +12,7 @@ os.environ['PYSPARK_SUBMIT_ARGS'] = '--packages org.apache.spark:spark-streaming
 findspark.init()
 
 print(pyspark.__version__)
-spark = SparkSession.builder.master("spark://172.17.0.1:7087").appName('WeatherDataProcess.com') \
+spark = SparkSession.builder.master("local[1]").appName('WeatherDataProcess.com') \
               .config('spark.jars.packages', 'org.mongodb.spark:mongo-spark-connector_2.12:3.0.2')\
               .config("spark.jars", "./postgresql-42.5.2.jar") \
               .config("spark.mongodb.input.uri", "mongodb+srv://ducvq:rocketdata@fake-database.iw3ot2b.mongodb.net/test.weather_data")\
