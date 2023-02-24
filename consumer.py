@@ -1,14 +1,13 @@
-import pyspark
 import os
+
+import findspark
+import pyspark
 from pyspark.context import SparkContext
 from pyspark.sql import SparkSession
-from pyspark.sql.types import *
 from pyspark.sql.functions import *
-from pyspark.sql.streaming import StreamingQuery
-from pyspark.sql.streaming import StreamingQueryManager
-import findspark
+from pyspark.sql.types import *
 
-os.environ['PYSPARK_SUBMIT_ARGS'] = '--packages org.apache.spark:spark-streaming-kafka-0-10_2.12:3.3.1,org.apache.spark:spark-sql-kafka-0-10_2.12:3.1.2 pyspark-shell'
+os.environ['PYSPARK_SUBMIT_ARGS'] = '--packages org.apache.spark:spark-streaming-kafka-0-10_2.12:3.3.1,org.apache.spark:spark-sql-kafka-0-10_2.12:3.0.2 pyspark-shell'
 findspark.init()
 
 print(pyspark.__version__)
@@ -23,7 +22,7 @@ spark = SparkSession.builder.master("local[1]").appName('WeatherDataProcess.com'
 spark.sparkContext.setLogLevel("ERROR")
 
 bootstrap_servers = "localhost:9092"
-topic_name = "weather_data"
+topic_name = "temperature"
 
 
 schema = StructType([StructField("observations", ArrayType(StructType([
@@ -58,7 +57,6 @@ schema = StructType([StructField("observations", ArrayType(StructType([
 sampleDataFrame = spark.readStream.format("kafka") \
        .option("kafka.bootstrap.servers", bootstrap_servers) \
        .option("subscribe", topic_name) \
-       .option("startingOffsets", "latest") \
        .load()
 
 # sampleDataFrame.printSchema()       
@@ -110,7 +108,7 @@ def foreach_batch_function(df, epoch_id):
     df.write.format("jdbc") \
       .option("url", "jdbc:postgresql://localhost:5432/test") \
       .option("driver", "org.postgresql.Driver") \
-      .option("dbtable","temperature").option("user","duc") \
+      .option("dbtable","temperature").option("user","postgres") \
       .option("password", "root") \
       .mode("append").save()
       
@@ -118,7 +116,7 @@ def foreach_batch_function1(df, epoch_id):
     df.write.format("jdbc") \
       .option("url", "jdbc:postgresql://localhost:5432/test") \
       .option("driver", "org.postgresql.Driver") \
-      .option("dbtable","humidity").option("user","duc") \
+      .option("dbtable","humidity").option("user","postgres") \
       .option("password", "root") \
       .mode("append").save()
 
@@ -126,7 +124,7 @@ def foreach_batch_function2(df, epoch_id):
     df.write.format("jdbc") \
       .option("url", "jdbc:postgresql://localhost:5432/test") \
       .option("driver", "org.postgresql.Driver") \
-      .option("dbtable","wind").option("user","duc") \
+      .option("dbtable","wind").option("user","postgres") \
       .option("password", "root") \
       .mode("append").save()
 
@@ -135,18 +133,17 @@ def write_row_in_mongo(df, dd):
         "append").save()
     pass
 
-# temperature_df.printSchema()
-# temperature_df.writeStream.foreachBatch(foreach_batch_function).start()
+temperature_df.printSchema()
+# temperature_df.writeStream.foreachBatch(foreach_batch_function).start().awaitTermination()
 # humidity_df.writeStream.foreachBatch(foreach_batch_function1).start()
 # wind_df.writeStream.foreachBatch(foreach_batch_function2).start()
 
-# weather_agg_write_stream = output_data \
-#        .writeStream \
-#        .trigger(processingTime='1 seconds') \
-#        .outputMode("update") \
-#        .option("truncate", "false") \
-#        .format("console") \
-#        .start()
+weather_agg_write_stream = output_data \
+       .writeStream \
+       .outputMode("update") \
+       .option("truncate", "false") \
+       .format("console") \
+       .start()
 
 # weather_agg_write_stream = output_data \
 #          .writeStream \
@@ -162,11 +159,13 @@ def write_row_in_mongo(df, dd):
 
 # output_data.printSchema()
 
-weather_agg_write_stream = output_data \
-              .writeStream \
-              .format('console') \
-              .foreachBatch(write_row_in_mongo) \
-              .start().awaitTermination()
+# weather_agg_write_stream = output_data \
+#               .writeStream \
+#               .format('console') \
+#               .foreachBatch(write_row_in_mongo) \
+#               .start()
+
+# weather_agg_write_stream.awaitTermination()
 # dsw = weather_df.writeStream \
 #     .format("mongodb") \
 #     .queryName("ToMDB") \
@@ -179,7 +178,7 @@ weather_agg_write_stream = output_data \
 #     .outputMode("append") \
 #     .start().awaitTermination();
 
-# weather_agg_write_stream.awaitTermination()
+weather_agg_write_stream.awaitTermination()
 
 # table = data.select(from_json(data.value.cast("string"), schema=schema)).alias("observations")
 

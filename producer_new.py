@@ -67,7 +67,7 @@ def getCurrentWeatherInfo(strationId):
         print("Error when fetching data!")
     return res.json()
 
-def write_json(new_data, filename='weather_data.json'):
+def write_json(new_data, filename='data_sample.json'):
     with open(filename,'r+') as file:
           # First we load existing data into a dict.
         file_data = json.load(file)
@@ -91,12 +91,12 @@ def getAllCurrentWeatherInfo():
     jsonData = readJson()
     for item in jsonData:
         cnt +=1
-        print(cnt)
+        print(item)
         # producer.send('weather_data', item)
         producer.send('temperature', item)
         # producer.send('humidity', item)
         # producer.send('wind', item)
-        time.sleep(1)
+        time.sleep(0.2)
     # for i in allIds:
     #     now = datetime.datetime.now()
     #     raw_data = getCurrentWeatherInfo(i)

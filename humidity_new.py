@@ -11,15 +11,14 @@ from pyspark.sql.types import *
 os.environ['PYSPARK_SUBMIT_ARGS'] = '--packages org.apache.spark:spark-streaming-kafka-0-10_2.12:3.3.1,org.apache.spark:spark-sql-kafka-0-10_2.12:3.1.2 pyspark-shell'
 findspark.init()
 
-spark = SparkSession.builder.master("spark://10.13.71.212:7077").appName('TemperatureProcess.com') \
-.config("spark.jars.packages", "postgresql-42.5.2.jar") \
-.getOrCreate()
-              
+spark = SparkSession.builder.master("spark://192.168.1.15:7077").appName('HumidityProcess.com') \
+              .config("spark.jars.packages", "postgresql-42.5.2.jar") \
+              .getOrCreate()
               
 spark.sparkContext.setLogLevel("ERROR")
 
 bootstrap_servers = "localhost:9092"
-topic_name = "temperature"
+topic_name = "humidity"
 
 schema = StructType([StructField("observations", ArrayType(StructType([
                     StructField("stationID", StringType(), True),
@@ -95,22 +94,18 @@ output_data = weather_df.select("station_id", "obs_time_utc", "obs_time_local", 
                                 "realtime_frequency", "epoch", "lat", "uv", "windir", "humidity", "qc_status", "temp", "heat_index", "city",
                                 "dewpt", "wind_chill", "wind_speed", "wind_gust", "pressure", "precip_rate", "precip_total", "elev", "country")
 
-temperature_df = weather_df.select("station_id", "city", "obs_time_utc", "obs_time_local", "temp", "heat_index", "lon", "lat", "country")
+humidity_df = weather_df.select("station_id", "city", "obs_time_utc", "obs_time_local", "humidity", "dewpt", 
+                                "pressure", "precip_rate", "precip_total", "lon", "lat", "country", "timestamp")
 
-def foreach_batch_function(df, epoch_id):
+humidity_df.printSchema()
+humidity_df.dropna()
+
+def foreach_batch_function1(df, epoch_id):
     df.write.format("jdbc") \
       .option("url", "jdbc:postgresql://localhost:5432/test") \
       .option("driver", "org.postgresql.Driver") \
-      .option("dbtable","temperature").option("user","postgres") \
+      .option("dbtable","humidity_sample").option("user","postgres") \
       .option("password", "root") \
       .mode("append").save()
 
-# weather_agg_write_stream = temperature_df \
-#        .writeStream \
-#        .outputMode("update") \
-#        .option("truncate", "false") \
-#        .format("console") \
-#        .start()
-
-# weather_agg_write_stream.awaitTermination()
-temperature_df.writeStream.foreachBatch(foreach_batch_function).start().awaitTermination()
+humidity_df.writeStream.foreachBatch(foreach_batch_function1).start().awaitTermination()
